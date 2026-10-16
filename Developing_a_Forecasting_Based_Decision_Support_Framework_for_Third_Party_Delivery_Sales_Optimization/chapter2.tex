@@ -1,0 +1,78 @@
+\section{Literature Review}
+
+In recent years, the restaurant industry has changed significantly due to digital technology and data availability \cite{almeida2023time}. Restaurants now operate through multiple sales channels such as dine-in, mobile applications, and third-party delivery platforms \cite{li2024criticality}. These channels generate large amounts of data that can help businesses better understand customer behavior and improve performance \cite{marciano2020big}. Studies show that integrating data from different sources supports better decision-making in areas such as pricing, promotions, and demand planning \cite{wu2025does}.
+
+The concept of Business Analytics has been widely discussed in the literature as a key enabler of data-driven decision-making. It involves the use of data, statistical methods, and analytical techniques to support organizational decisions \cite{liu2023review}. By transforming raw data into meaningful insights, business analytics helps organizations analyze past performance, predict future trends, and make informed decisions \cite{soldic2025business}. Existing studies commonly classify business analytics into three categories: descriptive, predictive, and prescriptive analytics \cite{sharma2022analytics}. Descriptive analytics focuses on analyzing historical data, while predictive analytics is used to forecast future outcomes \cite{almeida2023time}. In contrast, prescriptive analytics provides recommendations for optimal actions by combining data analysis with optimization models \cite{frazzetto2019prescriptive}. Research highlights that prescriptive analytics plays a critical role in improving decision-making by enabling organizations to choose the best possible actions based on data-driven insights \cite{berkhout2024revisiting}. 
+
+Apart from forecasting and optimization, recent studies highlight the need for integrated decision support systems in enhancing the operational efficiency and strategic planning \citep{roy2022restaurant}. Decision support frameworks use a combination of data management, analytical models, and visualization to help organisations make informed choices and decisions based on evidence and in a timely fashion \citep{tajeddini2026smart}. For restaurants, these systems can be beneficial in their ability to track sales data, understand customer trends, and assess profitability on each platform \citep{shah2025exploring}. Additionally, as digital platforms for food delivery become popular, researchers point out the need to develop analytical frameworks that can effectively process vast amounts of transactional data in real-time on a scalable platform \citep{majid2019role}. Therefore the use of predictive analytics in the food service sector in conjunction with business intelligence and decision support systems is an area of research that has emerged as a significant challenge for achieving competitiveness.
+
+Despite these advancements, there are still research gaps in the literature \cite{zhang2025timeraf}. Many studies focus only on predictive or prescriptive analytics separately rather than integrating them \cite{frazzetto2019prescriptive}. There is also limited research specifically focused on the restaurant industry, especially small and medium-sized enterprises \cite{li2024criticality}. In addition, multi-channel sales are often studied independently instead of as interconnected systems \cite{furst2022multi}. However, despite these contributions, most existing research focuses on either data analysis, prediction, or optimization separately. There is limited research that integrates all these components into a unified framework, especially in the context of multi-channel sales in the restaurant industry. Furthermore, many studies do not address the practical challenges faced by small and medium-sized businesses.
+
+Therefore, this study aims to address these gaps by developing a prescriptive decision intelligence framework that combines data integration, predictive analytics, and optimization techniques. The case of HungryHub Oy provides a practical context to demonstrate how such a framework can support better decision-making and improve multi-channel sales performance.
+
+
+\subsection{Demand Forecasting in Food Delivery Platforms}
+
+Demand forecasting is very important for restaurants, especially those using online delivery platforms \citep{chae2024value}. It helps businesses estimate how many orders they will receive in the future \citep{li2025demand}. This allows them to plan better, reduce waste, and improve service.
+
+\textbf{Restaurant Demand Forecasting}
+
+Previous research has investigated predicting restaurant demand based on past sales data \citep{shinoda2021prediction, fernandes2021data}. Methods such as daily or weekly trends observed via algebraic solutions such as simple and time-series models \citep{wang2024deep}. These methods ultimately help avoid high- and low-demand periods. Some additional techniques include machine learning models for improving prediction \citep{rasheed2023improving}. These models may also take into account additional factors, such as holidays, promotions, or special events. Demand Forecasting Demand forecasting — in a nutshell — assists restaurants to plan inventory and operations better.
+
+\textbf{Online Delivery Analytics}
+
+With the growth of platforms like Wolt and Foodora, researchers have started to focus on online delivery data \citep{mbare2023psychosocial}. These platforms generate detailed data about customer orders, timing, and preferences. Studies show that this data can be used to understand customer behavior and platform performance \citep{geissinger2022sharing}. For example, businesses can see which platform performs better at certain times or which products are more popular. However, most studies focus either on forecasting or on data analysis separately. There is still a lack of research that combines forecasting with decision-making. This study aims to connect these two areas by using forecasts to support better business decisions.
+
+
+\subsection{Time Series Forecasting Methods}
+
+Time series forecasting methods are widely used to predict future values based on historical data \citep{kolambe2024forecasting}. In the context of this study, these methods are applied to forecast platform-level sales using past transaction data. Different approaches can be used depending on the data characteristics and complexity.
+
+\textbf{ARIMA Models}
+
+ARIMA:AutoRegressive Integrated Moving Average method is widely used classical statistical method for time series forecasting \citep{arumugam2023time}. It does this by identifying patterns in historical data trends, seasonality, to make predictions of future values \citep{bektemyssova2022time}. ARIMA works great on time series data that displays consistent patterns over a period of time. This makes them pretty easy to implement and widely understood. Yet, they can not generalize well in ultra-complex or non-linear datasets — that are present in real-world business context \citep{albeladi2023time}.
+
+\textbf{Machine Learning Approaches}
+
+In recent years, machine learning methods have gained considerable attention in forecasting tasks. This includes models ranging from linear regression, decision trees, random forests to neural networks \citep{masini2023machine}. Machine learning, as opposed to conventional models, can learn complex or non-linear relationships in the data \citep{ahamed2023machine}. They can, too, consist of several input variables, which is classified according to time, promotions or external factors. This makes them more versatile, as well as usually more precise than conventional techniques \citep{benti2023forecasting}. On the other hand, machine learning models tend to require a greater amount of data and fine-tuning. They also tend to be harder to interpret than simpler statistical models.
+
+\textbf{Prophet Forecasting Model}
+
+Prophet is a business time-series forecasting model developed by Facebook (Meta) \citep{sivaramakrishnan2022forecasting}. This is specifically useful when data has a high seasonality and missing values \citep{anand2024comparative}. Overview: ProphetThis model trends and seasonality easily and flexibly in addition to holidays. It is user-friendly and achieves decent performance on several realistic datasets, particularly those with daily or weekly periodicity \citep{najem2026hybrid}. This research uses Prophet as one of the key forecasting methods applied because it has easy handling of seasonality and also can easily be used in business contexts.
+
+
+\subsection{Decision Support Systems}
+
+Decision Support Systems (DSS) are computer-based tools that help managers and decision-makers make better and more informed decisions \citep{fernando2022decision}. These systems combine data, analytical models, and user-friendly interfaces to support problem-solving and planning in organizations \citep{triantafyllou2024decision}. 
+
+In business contexts, DSS frameworks typically consist of three main components \citep{bernardi2024conversing}. The first is the data component, which includes internal and external data sources such as sales data, customer information, and market data. The second is the model component, which involves analytical methods such as forecasting models, optimization techniques, or simulation models. The third is the user interface, which allows decision-makers to interact with the system and interpret the results.
+
+DSS frameworks are designed to support different types of decisions, including structured, semi-structured, and unstructured problems \citep{alojail2023informed}. In many cases, they are used to analyze different scenarios, evaluate possible outcomes, and recommend actions \citep{ghiani2024integrating}. This makes them especially useful in dynamic business environments where decisions must be made under uncertainty.
+
+Forecasting and optimization are combined in the DSS as per this study. The system requires the past sales information, it forecasts demand and makes a decision recommendation on the basis of the forecasts. This assists businesses in leaving behind mere knowledge of past data to making proactive and data-driven decisions. In general, DSS are significant in enhancing efficiency, reducing uncertainty, and assisting superior strategic and operational decisions within the contemporary organizations.
+
+
+\subsection{Profit Optimization in Digital Platforms}
+
+Profit optimization is an important topic in digital platform-based businesses, especially in industries like food delivery where multiple platforms, pricing structures, and customer behaviors interact \citep{deng2022profit}. In such environments, businesses aim to maximize revenue or profit by making better decisions related to pricing, promotions, and sales allocation across platforms.
+
+Pricing optimization is an important research area \citep{rangaswamy2020role}. According to \cite{ali2024investigating}, using pricing strategies, such as discounts and promotional offers, can greatly impact demand for the customers. Dynamic pricing and targeted promotion strategies are common in digital platforms to lure customers and increase order volume \citep{kopalle2023dynamic}. Nevertheless, continuously discounting their products may erode their profit margins thus companies should find a reasonable trade-off between higher demand and profitability \citep{nowak2024dynamic}.
+
+Allocation optimization is another important area. For multiple delivery platforms, this means deciding how much of their focus, resources or promotion should be allocated to each platform \citep{ashraf2023optimal}. Different platforms may have different commission fees, customer reach and demand patterns. More specifically, literature shows that allocating resources optimally increases the overall output by focusing on the channels that are more profitable \citep{alnaggar2021crowdsourced}.
+
+Optimization models, such as linear programming and simulation-based approaches, are commonly used to support these decisions \citep{abolghasemian2025simulation}. These models take inputs such as demand forecasts, pricing strategies, and cost structures to recommend actions that maximize profit or revenue under certain constraints. In many cases, profit optimization is closely linked with demand forecasting. Accurate forecasts provide the foundation for better optimization decisions \citep{verma2024transforming}.
+
+In the absence of sound predictions, optimization models can deliver ineffective or impractical suggestions. Profit optimization is combined with forecasting in this study to develop prescriptive decision-support model. It is not only aimed at anticipating the future demand but also proposing actions that can enhance financial performance across digital platforms of delivery. This integrated strategy assists companies to make better, evidence-based decision-making in a competitive platform world.
+
+
+\subsection{Research Gap}
+
+Despite the increasing body of research on the topic of demand forecasting and digital platform analytics, a number of crucial gaps remain. Most of the studies are dedicated to the demand forecasting of restaurants with the help of the statistical or machine learning models, whereas others analyze the behavior of customers and their performance in online delivery services. Nevertheless, these areas are commonly researched independently.
+
+Majority of the current studies have focused on enhancing forecasting accuracy but not extending to demonstrate how these forecasts can be applied in real decision making. Moreover, profit maximization studies typically make simplified or fixed demand assumptions, instead of using actual forecasted demand based on platform data.
+
+Another important gap is related to multi-platform environments. Restaurants today operate on multiple delivery platforms such as Wolt and Foodora, each with different characteristics. However, only a limited number of studies address how to integrate and analyze data across multiple platforms in a unified way.
+
+Furthermore, there is a lack of practical frameworks that combine data integration, demand forecasting, and profit optimization into a single decision-support system. Many studies remain theoretical or focus on a single method, without providing a complete solution that can be applied in real business settings.
+
+Therefore, this study addresses these gaps by developing a framework that integrates forecasting and optimization using real multi-platform delivery data. It aims to bridge the gap between analysis and action by transforming data into practical, profit-oriented decision support.

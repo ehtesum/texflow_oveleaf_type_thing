@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaTeX Editor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/hint/show-hint.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!--  HOME VIEW — project dashboard                                            -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div id="view-home">
+  <header class="home-header">
+    <div class="home-logo">
+      <span class="logo-icon">λ</span>
+      <span class="logo-text">LaTeX Editor</span>
+    </div>
+    <div class="home-actions">
+      <label class="theme-switch" title="Toggle dark / light mode">
+        <span class="switch-icon">🌙</span>
+        <input type="checkbox" id="home-theme-toggle">
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-icon">☀️</span>
+      </label>
+      <button id="home-new-btn"      class="btn btn-compile">+ New Project</button>
+      <button id="home-template-btn" class="btn">Templates</button>
+      <button id="home-import-btn"   class="btn">⬆ Import</button>
+    </div>
+  </header>
+  <div class="home-body">
+    <h2 class="home-section-title">Your Projects</h2>
+    <div id="project-grid" class="project-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!--  EDITOR VIEW                                                              -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div id="view-editor" class="hidden">
+
+  <!-- Editor header -->
+  <header class="editor-header">
+    <div class="eh-left">
+      <button id="back-btn" class="btn icon-only" title="Back to projects">←</button>
+      <span id="project-name-label" class="project-name-label"></span>
+    </div>
+    <div class="eh-right">
+      <label class="theme-switch" title="Toggle dark / light mode">
+        <span class="switch-icon">🌙</span>
+        <input type="checkbox" id="editor-theme-toggle">
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span class="switch-icon">☀️</span>
+      </label>
+      <select id="compiler-select" class="compiler-select">
+        <option value="pdflatex">pdfLaTeX</option>
+        <option value="xelatex">XeLaTeX</option>
+        <option value="lualatex">LuaLaTeX</option>
+      </select>
+      <div class="recompile-wrap">
+        <button id="compile-btn" class="btn-recompile">
+          <span id="compile-spinner" class="spinner hidden"></span>
+          Recompile
+        </button>
+        <span id="err-badge" class="err-badge hidden">0</span>
+      </div>
+      <button id="export-btn"     class="icon-btn" title="Export ZIP">⬇ ZIP</button>
+      <button id="download-btn"   class="icon-btn" title="Download PDF">⬇ PDF</button>
+      <button id="fullscreen-btn" class="icon-btn" title="Fullscreen">⛶</button>
+      <button id="settings-btn"   class="icon-btn" title="Settings">⚙</button>
+      <button id="help-btn"       class="icon-btn help-btn" title="Shortcuts & Tips">?</button>
+    </div>
+  </header>
+
+  <!-- 3-panel layout -->
+  <div class="editor-layout" id="editor-layout">
+
+    <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- File tree section -->
+      <div class="sb-section" id="sb-filetree">
+        <div class="sb-section-head" id="sb-ft-head">
+          <span class="sb-caret" id="ft-caret">▾</span>
+          <span class="sb-label">File tree</span>
+          <div class="sb-head-btns">
+            <button class="icon-btn sm" id="new-file-btn"   title="New file">📄</button>
+            <button class="icon-btn sm" id="new-folder-btn" title="New folder">📁</button>
+            <button class="icon-btn sm" id="upload-btn"     title="Upload">⬆</button>
+            <input type="file" id="upload-input" multiple hidden>
+          </div>
+        </div>
+        <div id="file-tree" class="file-tree"></div>
+      </div>
+
+      <!-- Outline resize handle within sidebar -->
+      <div class="sb-rh" id="rh-outline"></div>
+
+      <!-- File outline section -->
+      <div class="sb-section" id="sb-outline">
+        <div class="sb-section-head" id="sb-ol-head">
+          <span class="sb-caret" id="ol-caret">▾</span>
+          <span class="sb-label">File outline</span>
+        </div>
+        <div id="file-outline" class="file-outline">
+          <div class="outline-empty">No sections found.</div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Sidebar resize handle -->
+    <div class="rh rh-col" id="rh-left"></div>
+
+    <!-- ── Editor panel ────────────────────────────────────────────────────── -->
+    <div class="editor-panel" id="editor-panel">
+
+      <!-- Formatting toolbar -->
+      <div class="editor-toolbar">
+        <button class="tb-btn" id="tb-undo"   title="Undo">↩</button>
+        <button class="tb-btn" id="tb-redo"   title="Redo">↪</button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn" id="tb-bold"   title="Bold \textbf{}"><b>B</b></button>
+        <button class="tb-btn" id="tb-italic" title="Italic \textit{}"><i>I</i></button>
+        <button class="tb-btn" id="tb-uline"  title="Underline \underline{}"><u>U</u></button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn" id="tb-math-i" title="Inline math $…$">$</button>
+        <button class="tb-btn" id="tb-math-d" title="Display math \[…\]">∑</button>
+        <span class="tb-sep"></span>
+        <button class="tb-btn" id="tb-find"   title="Find & Replace (Ctrl+F)">🔍</button>
+        <span class="tb-spacer"></span>
+        <span id="save-status" class="save-status"></span>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="tab-bar" id="tab-bar">
+        <div class="tabs-scroll"><div class="tabs" id="tabs"></div></div>
+      </div>
+
+      <!-- Find / Replace bar -->
+      <div class="find-bar hidden" id="find-bar">
+        <div class="find-row">
+          <span class="find-lbl">Find</span>
+          <input id="find-input" class="find-input" placeholder="Search…" spellcheck="false">
+          <label class="find-opt" title="Case sensitive"><input type="checkbox" id="find-case"> Aa</label>
+          <label class="find-opt" title="Regex"><input type="checkbox" id="find-regex"> .*</label>
+          <button class="find-btn" id="find-prev">↑</button>
+          <button class="find-btn" id="find-next">↓</button>
+          <span id="find-count" class="find-count"></span>
+          <button class="find-close" id="find-close">✕</button>
+        </div>
+        <div class="find-row">
+          <span class="find-lbl">Replace</span>
+          <input id="replace-input" class="find-input" placeholder="Replace with…" spellcheck="false">
+          <button class="find-btn" id="replace-one">Replace</button>
+          <button class="find-btn" id="replace-all">All</button>
+        </div>
+      </div>
+
+      <div id="editor-container" class="editor-container"></div>
+
+      <!-- Status bar -->
+      <div class="status-bar">
+        <span id="cursor-pos">Ln 1, Col 1</span>
+        <span class="sb-sep">|</span>
+        <span id="word-count">0 words</span>
+        <span class="sb-sep">|</span>
+        <span id="compile-status" class="compile-status"></span>
+      </div>
+    </div>
+
+    <!-- PDF resize handle -->
+    <div class="rh rh-col" id="rh-right"></div>
+
+    <!-- ── PDF panel ───────────────────────────────────────────────────────── -->
+    <div class="pdf-panel" id="pdf-panel">
+
+      <!-- PDF toolbar -->
+      <div class="pdf-toolbar">
+        <div class="pdf-nav">
+          <button class="pdf-nav-btn" id="pdf-prev-page" title="Previous page">↑</button>
+          <input  id="pdf-page-input" class="pdf-page-input" type="number" min="1" value="1">
+          <span class="pdf-page-of">/ <span id="pdf-total-pages">—</span></span>
+          <button class="pdf-nav-btn" id="pdf-next-page" title="Next page">↓</button>
+        </div>
+        <div class="pdf-zoom-ctrl">
+          <button class="icon-btn" id="pdf-zoom-out" title="Zoom out">−</button>
+          <span id="pdf-zoom-label" class="zoom-label">100%</span>
+          <button class="icon-btn" id="pdf-zoom-in"  title="Zoom in">+</button>
+        </div>
+      </div>
+
+      <!-- PDF viewport -->
+      <div class="pdf-wrap" id="pdf-wrap">
+        <div class="pdf-placeholder" id="pdf-placeholder">
+          <div class="placeholder-inner">
+            <div style="font-size:2.8rem">📄</div>
+            <div>Compile to see the PDF</div>
+            <div class="placeholder-sub">After compiling, click on the PDF to jump to the source line</div>
+          </div>
+        </div>
+        <div id="pdf-canvas-container" class="pdf-canvas-container hidden"></div>
+      </div>
+
+    </div>
+  </div><!-- .editor-layout -->
+
+  <!-- Log resize + panel -->
+  <div class="rh rh-row" id="rh-log"></div>
+  <div class="log-panel" id="log-panel">
+    <div class="log-header" id="log-toggle">
+      <span id="log-arrow" class="log-arrow">▶</span>
+      <span>Compile Log</span>
+      <span id="log-badge" class="log-badge"></span>
+      <button class="icon-btn" id="clear-log" title="Clear" style="margin-left:auto">✕</button>
+    </div>
+    <pre id="compile-log" class="compile-log hidden"></pre>
+  </div>
+
+</div><!-- #view-editor -->
+
+<!-- Drop overlay -->
+<div class="drop-overlay hidden" id="drop-overlay">
+  <div class="drop-msg">Drop files to upload to current project</div>
+</div>
+
+<!-- Hidden inputs -->
+<input type="file" id="import-input" accept=".zip" hidden>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!--  MODALS                                                                   -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+
+<!-- Generic input modal -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">New Project</div>
+    <input class="modal-input" id="modal-input" type="text">
+    <div class="modal-actions">
+      <button class="btn" id="modal-cancel">Cancel</button>
+      <button class="btn btn-compile" id="modal-confirm">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- Template gallery -->
+<div class="modal-overlay hidden" id="template-overlay">
+  <div class="modal modal-wide">
+    <div class="modal-head">
+      <div class="modal-title">New from Template</div>
+      <button class="icon-btn" id="template-close">✕</button>
+    </div>
+    <div class="modal-field">
+      <label>Project name</label>
+      <input class="modal-input" id="template-name" type="text" placeholder="my-project">
+    </div>
+    <div class="template-grid" id="template-grid"></div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="modal-overlay hidden" id="settings-overlay">
+  <div class="modal modal-settings">
+    <div class="modal-head">
+      <div class="modal-title">Settings</div>
+      <button class="icon-btn" id="settings-close">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="setting-row">
+        <label class="setting-label">Default compiler</label>
+        <div class="setting-ctrl">
+          <label class="radio-opt"><input type="radio" name="s-compiler" value="pdflatex"> pdfLaTeX</label>
+          <label class="radio-opt"><input type="radio" name="s-compiler" value="xelatex"> XeLaTeX</label>
+          <label class="radio-opt"><input type="radio" name="s-compiler" value="lualatex"> LuaLaTeX</label>
+        </div>
+      </div>
+      <div class="setting-row">
+        <label class="setting-label">Font size</label>
+        <div class="setting-ctrl">
+          <input type="range" id="s-fontsize" min="10" max="22" step="1">
+          <span id="s-fontsize-val" class="setting-val">14px</span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <label class="setting-label">Word wrap</label>
+        <div class="setting-ctrl"><input type="checkbox" id="s-wrap"></div>
+      </div>
+      <div class="setting-row">
+        <label class="setting-label">Line numbers</label>
+        <div class="setting-ctrl"><input type="checkbox" id="s-lines"></div>
+      </div>
+      <div class="setting-row">
+        <label class="setting-label">Double compile</label>
+        <div class="setting-ctrl">
+          <input type="checkbox" id="s-double">
+          <span class="setting-note">Run twice (resolves cross-refs)</span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <label class="setting-label">Autosave delay</label>
+        <div class="setting-ctrl">
+          <input type="range" id="s-autosave" min="500" max="10000" step="500">
+          <span id="s-autosave-val" class="setting-val">1.2 s</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="settings-cancel">Cancel</button>
+      <button class="btn btn-compile" id="settings-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help / Instructions modal -->
+<div class="modal-overlay hidden" id="help-overlay">
+  <div class="modal modal-help">
+    <div class="modal-head">
+      <div class="modal-title">Shortcuts &amp; Tips</div>
+      <button class="icon-btn" id="help-close">✕</button>
+    </div>
+    <div class="help-body">
+      <div class="help-section">
+        <div class="help-section-title">Compilation</div>
+        <div class="help-row"><span class="help-key">Ctrl+Enter</span><span class="help-key">F5</span><span>Compile / Recompile</span></div>
+        <div class="help-row"><span class="help-key">Ctrl+S</span><span>Save current file</span></div>
+        <div class="help-note">Right-click a .tex file in the tree → "Set as main file" before compiling a multi-file project.</div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">SyncTeX — Editor ↔ PDF</div>
+        <div class="help-row"><span class="help-key">Alt+Click</span><span>in editor → jump to PDF page (forward)</span></div>
+        <div class="help-row"><span class="help-key">Ctrl+Alt+F</span><span>Forward sync shortcut</span></div>
+        <div class="help-row"><span class="help-key">Click</span><span>on PDF → jump to source line (inverse)</span></div>
+        <div class="help-note">SyncTeX requires at least one successful compile first.</div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">Editor</div>
+        <div class="help-row"><span class="help-key">Ctrl+F</span><span class="help-key">Ctrl+H</span><span>Find / Replace</span></div>
+        <div class="help-row"><span class="help-key">Ctrl+Z</span><span class="help-key">Ctrl+Y</span><span>Undo / Redo</span></div>
+        <div class="help-row"><span class="help-key">Escape</span><span>Close find bar</span></div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">Formatting toolbar</div>
+        <div class="help-row"><span class="help-key">B</span><span>\textbf{} — bold</span></div>
+        <div class="help-row"><span class="help-key">I</span><span>\textit{} — italic</span></div>
+        <div class="help-row"><span class="help-key">U</span><span>\underline{} — underline</span></div>
+        <div class="help-row"><span class="help-key">$</span><span>inline math $…$</span></div>
+        <div class="help-row"><span class="help-key">∑</span><span>display math \[…\]</span></div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">Files &amp; Projects</div>
+        <div class="help-row"><span class="help-key">Right-click</span><span>.tex file → Set as main file</span></div>
+        <div class="help-row"><span class="help-key">Drag &amp; drop .zip</span><span>Import project</span></div>
+        <div class="help-row"><span class="help-key">Drag &amp; drop files</span><span>Upload to project</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/stex/stex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/search/searchcursor.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+<script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+\section{Prescriptive Decision Model}
+
+\subsection{Decision Problem Definition}
+
+The primary decision issue within this paper is the allocation of the sales or promotion activities across various delivery platforms to the maximum profit. As platforms like Wolt and Foodora have a dissimilar commission framework, demand patterns, and customer behavior, it becomes significant to select the most suitable allocation strategy. 
+
+In the absence of a systematic strategy, decisions can be based on intuition that can result in inefficiency in the utilization of resources and diminished profitability. Thus, a decision model grounded in data is required to aid in platform-level planning and enhance business performance.
+
+
+\subsection{Optimization Model}
+
+The optimization model is developed to transform demand forecasts into actionable decisions. It uses forecasted demand as input and generates recommendations that aim to maximize profit under given constraints.
+
+\textbf{Objective Function}
+
+The objective of the model is to maximize total profit. This is achieved by selecting the best allocation of orders or promotional efforts across platforms while considering revenues and costs. The objective of the model is defined as:
+
+\[
+\max \sum_{i} (Revenue_i - Cost_i) \cdot x_i
+\]
+
+where \(x_i\) represents the number of orders allocated to platform \(i\).
+
+
+\textbf{Constraints}
+
+The optimization model is subject to the following constraints:
+
+\[
+\sum_i x_i \leq Capacity
+\]
+
+\[
+x_i \leq Demand_i
+\]
+
+The constraints can be explained as follows:
+
+\begin{itemize}
+    \item \textbf{Delivery capacity:} The total number of orders that can be handled is limited by operational capacity.
+    
+    \item \textbf{Platform fees:} Each platform charges different commission rates, which affect profit margins.
+    
+    \item \textbf{Demand limits:} The number of orders allocated to each platform cannot exceed the forecasted demand.
+\end{itemize}
+
+These constraints ensure that the model produces realistic and feasible recommendations.
+
+
+\subsection{Decision Intelligence Framework}
+
+The suggested model unites data, forecasting, and optimization into one pipeline. This is initiated by the launch of data collection and integration across various platforms. This information is subsequently utilized to come up with demand projections by the Prophet model. 
+
+The required demand is sent to the optimization model that determines the optimal allocation strategy that will maximize profit. Lastly, the system generates decision recommendations which can aid managerial actions. 
+
+Overall, the framework can be described as having a systematic flow: Data → Forecast → Optimization → Decision recommendation. By doing so, businesses can stop analyzing data and start taking action and making decisions that are more effective and based on data.
+
+
+\subsection{Simulation / Back-Testing}
+
+Simulation or back-testing is done to assess the effectiveness of the proposed decision-support framework using historical data. Back-testing entails the use of the forecasting and optimization models to previous data and the result compared with the real results. 
+
+In this analysis, the historical sales data will be separated into training and testing periods. The forecasting model is trained with historical data and then is applied to make forecasts of the demand within a chosen time. The forecasts are then fed into the optimization model to produce decision recommendations. 
+
+The framework is assessed by comparing the simulated decisions and actual historical outcomes. The main indicators are evaluated, which are the accuracy of the forecasts and possible profit increase. This will enable the study to determine whether a better outcome would have been achieved in the event that the proposed model would have been implemented in real time. 
+
+Simulation is useful to illustrate the practical usefulness of the framework without necessarily having to implement it in the actual world. It gives an illustration that the use of data-driven decisions can be more effective in enhancing performance than conventional or intuitive methods. 
+
+On the whole, back-testing will guarantee that the proposed decision-support system is theoretically correct and practically effective to enhance the business decision-making process.

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
